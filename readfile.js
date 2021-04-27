@@ -8,22 +8,18 @@ const infoCities = [
   {
     nome: 'ARAÇATUBA',
     populacao: 198087.57,
-    enabled: false,
   },
   {
     nome: 'BIRIGUI',
     populacao: 124851.24,
-    enabled: false
   },
   {
     nome: 'GUARARAPES',
     populacao: 33109.49,
-    enabled: true,
   },
   {
     nome: 'VALPARAÍSO',
     populacao: 26816.10,
-    enabled: false,
   }
 ]
 
