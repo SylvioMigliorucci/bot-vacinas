@@ -28,7 +28,7 @@ const infoCities = [
 ]
 
 async function _getPercentage({city, doses}){
-  const infoCity = infoCities.filter((item) => item.nome === city && item.enabled === true)
+  const infoCity = infoCities.filter((item) => item.nome === city)
   console.log({doses})
   console.log({infocity: infoCity[0].populacao})
   return (Number(doses)*100) / Number(infoCity[0].populacao);
@@ -55,40 +55,22 @@ async function ReadFile(){
 
   try {
     const jsonObj = await csv().fromFile('file.csv')
-    console.log({jsonObj});
-    const infoCity = infoCities.filter((item) =>  item.enabled === true)
-    const result =  jsonObj.filter(item => item['Município'] === infoCity[0].nome).reverse()
-    console.log(result.length)
-    
-    if(result.length === 0){
-      console.log('arquivo não está disponivel')
-    }else{
-      console.log('post');
-      console.log(await _getBodyContent({result, infoDate}))
-      // twitter.BotInit(await _getBodyContent({result, infoDate}))
+
+    for (const city of infoCities) {
+      const result =  jsonObj.filter(item => item['Município'] === city.nome).reverse()
+      console.log(result.length)
+      
+      if(result.length === 0){
+        console.log('arquivo não está disponivel')
+      }else{
+        console.log('post');
+        console.log(await _getBodyContent({result, infoDate}))
+        twitter.BotInit(await _getBodyContent({result, infoDate}))
+      }
     }
   } catch (err) {
     console.log('Não possui informação por enquanto', err)
   }
-
-
-  
-  // .then(async (jsonObj)=>{
-  //     const infoCity = infoCities.filter((item) =>  item.enabled === true)
-  //     const result =  jsonObj.filter(item => item['Município'] === infoCity[0].nome).reverse()
-  //     console.log(result.length)
-      
-  //     if(result.length === 0){
-  //       console.log('arquivo não está disponivel')
-  //     }else{
-  //       console.log('post');
-  //       console.log(await _getBodyContent({result, infoDate}))
-  //       twitter.BotInit(await _getBodyContent({result, infoDate}))
-  //     }
-
-  // }).catch(err => {
-  //   console.log('Não possui informação por enquanto', err)
-  // })
 
 }
 
