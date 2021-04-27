@@ -7,17 +7,28 @@ const results = [];
 // const CSV = promisify(csv)
 
 async function CommaFile(){
-  return fs.readFile('file.csv', 'utf8', function (err,data) {
-    if (err) {
-      return console.log(err);
-    }
-    var result = data.replace(/;/g, ',');
-  
-    fs.writeFile('file.csv', result, 'utf8', function (err) {
-       if (err) return console.log(err);
+  console.log('Comma file')
+
+  return new Promise((resolve, reject) => {
+    fs.readFile('file.csv', 'utf8', function (err,data) {
+      if (err) {
+        console.log(err);
+        return reject(err.message);
+      }
+      console.log({data})
+      var result = data.replace(/;/g, ',');
+
+      console.log({result});
+    
+      fs.writeFile('file.csv', result, 'utf8', function (err) {
+         if (err) {
+          console.log(err);
+          return reject(err.message);
+         }
+         resolve(true);
+      });
     });
-  });
-  
+  })
 }
 
 module.exports = {

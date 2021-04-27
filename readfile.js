@@ -49,27 +49,46 @@ async function _getBodyContent({result, infoDate}){
 
 
 async function ReadFile(){
+  console.log('Read file')
   const {archiveDate, year, month, fulldate, infoDate} = await getDates();
   console.log('This now dates:',archiveDate, fulldate);
 
-   csv()
-  .fromFile('file.csv')
-  .then(async (jsonObj)=>{
-      const infoCity = infoCities.filter((item) =>  item.enabled === true)
-      const result =  jsonObj.filter(item => item['Município'] === infoCity[0].nome).reverse()
-      console.log(result.length)
-      
-      if(result.length === 0){
-        console.log('arquivo não está disponivel')
-      }else{
-        console.log('post');
-        console.log(await _getBodyContent({result, infoDate}))
-        twitter.BotInit(await _getBodyContent({result, infoDate}))
-      }
-
-  }).catch(err => {
+  try {
+    const jsonObj = await csv().fromFile('file.csv')
+    console.log({jsonObj});
+    const infoCity = infoCities.filter((item) =>  item.enabled === true)
+    const result =  jsonObj.filter(item => item['Município'] === infoCity[0].nome).reverse()
+    console.log(result.length)
+    
+    if(result.length === 0){
+      console.log('arquivo não está disponivel')
+    }else{
+      console.log('post');
+      console.log(await _getBodyContent({result, infoDate}))
+      // twitter.BotInit(await _getBodyContent({result, infoDate}))
+    }
+  } catch (err) {
     console.log('Não possui informação por enquanto', err)
-  })
+  }
+
+
+  
+  // .then(async (jsonObj)=>{
+  //     const infoCity = infoCities.filter((item) =>  item.enabled === true)
+  //     const result =  jsonObj.filter(item => item['Município'] === infoCity[0].nome).reverse()
+  //     console.log(result.length)
+      
+  //     if(result.length === 0){
+  //       console.log('arquivo não está disponivel')
+  //     }else{
+  //       console.log('post');
+  //       console.log(await _getBodyContent({result, infoDate}))
+  //       twitter.BotInit(await _getBodyContent({result, infoDate}))
+  //     }
+
+  // }).catch(err => {
+  //   console.log('Não possui informação por enquanto', err)
+  // })
 
 }
 
