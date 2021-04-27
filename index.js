@@ -8,17 +8,11 @@ const {CommaFile} = require('./commafile');
 const { setInterval, setTimeout } = require('timers');
 const results = [];
 
-(async () => {
-  setTimeout(() =>{
-    console.log('create file')
-    CreateFile();
-  }, 1000);
-  setTimeout(() =>{
-    console.log('Comma file')
-    CommaFile();
-  }, 2000)
-  setTimeout(() => {
-    console.log('Read file')
-    ReadFile();
-  }, (3000));
+(async () => {  
+    await CreateFile();
+
+    await CommaFile();
+
+    await ReadFile();
+  
 })();

@@ -9,14 +9,23 @@ var getMonth = require('date-fns/getMonth')
 const { getDates } = require('./getDates')
 
 async function CreateFile(){
+
+  console.log('create file')
   const file =  fs.createWriteStream('file.csv')
   const {archiveDate, year, month, fulldate} = await getDates();
   console.log('This now dates:',archiveDate, fulldate);
   
-  return http.get(`https://www.saopaulo.sp.gov.br/wp-content/uploads/${year}/${month}/${archiveDate}_vacinometro.csv`, function(response) {
-    // console.log(response);
-    response.pipe(file);
-  })
+  return new Promise((resolve, reject) => {
+    return http.get(`https://www.saopaulo.sp.gov.br/wp-content/uploads/${year}/${month}/${archiveDate}_vacinometro.csv`, function(response) {
+      // console.log(response);
+      response.pipe(file);
+
+      file.on('finish', () => {
+        resolve(true);
+      })
+    })
+  }); 
+  
   
   
 }

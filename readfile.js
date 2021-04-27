@@ -8,27 +8,23 @@ const infoCities = [
   {
     nome: 'ARAÇATUBA',
     populacao: 198087.57,
-    enabled: false,
   },
   {
     nome: 'BIRIGUI',
     populacao: 124851.24,
-    enabled: false
   },
   {
     nome: 'GUARARAPES',
     populacao: 33109.49,
-    enabled: true,
   },
   {
     nome: 'VALPARAÍSO',
     populacao: 26816.10,
-    enabled: false,
   }
 ]
 
 async function _getPercentage({city, doses}){
-  const infoCity = infoCities.filter((item) => item.nome === city && item.enabled === true)
+  const infoCity = infoCities.filter((item) => item.nome === city)
   console.log({doses})
   console.log({infocity: infoCity[0].populacao})
   return (Number(doses)*100) / Number(infoCity[0].populacao);
@@ -49,14 +45,15 @@ async function _getBodyContent({result, infoDate}){
 
 
 async function ReadFile(){
+  console.log('Read file')
   const {archiveDate, year, month, fulldate, infoDate} = await getDates();
   console.log('This now dates:',archiveDate, fulldate);
 
-   csv()
-  .fromFile('file.csv')
-  .then(async (jsonObj)=>{
-      const infoCity = infoCities.filter((item) =>  item.enabled === true)
-      const result =  jsonObj.filter(item => item['Município'] === infoCity[0].nome).reverse()
+  try {
+    const jsonObj = await csv().fromFile('file.csv')
+
+    for (const city of infoCities) {
+      const result =  jsonObj.filter(item => item['Município'] === city.nome).reverse()
       console.log(result.length)
       
       if(result.length === 0){
@@ -66,10 +63,10 @@ async function ReadFile(){
         console.log(await _getBodyContent({result, infoDate}))
         twitter.BotInit(await _getBodyContent({result, infoDate}))
       }
-
-  }).catch(err => {
+    }
+  } catch (err) {
     console.log('Não possui informação por enquanto', err)
-  })
+  }
 
 }
 
