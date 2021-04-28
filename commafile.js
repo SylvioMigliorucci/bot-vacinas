@@ -15,10 +15,10 @@ async function CommaFile(){
         console.log(err);
         return reject(err.message);
       }
-      console.log({data})
+      //console.log({data})
       var result = data.replace(/;/g, ',');
 
-      console.log({result});
+      //console.log({result});
     
       fs.writeFile('file.csv', result, 'utf8', function (err) {
          if (err) {
