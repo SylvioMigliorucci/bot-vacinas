@@ -2,7 +2,7 @@
 
 async function getDates(){
   const fulldate = new Date();
-  const day = 27//fulldate.getDate();
+  const day = fulldate.getDate();
   const month = ("0" + (fulldate.getMonth() + 1)).slice(-2);
   const year = fulldate.getFullYear()
   const archiveDate = `${year}${month}${day}`
