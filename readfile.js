@@ -76,7 +76,7 @@ async function ReadFile(){
     const jsonObj = await csv().fromFile('file.csv')
 
     for (const city of infoCities) {
-      const result =  jsonObj.filter(item => item[COL_CITY] === city.nome).reverse()
+      const result =  jsonObj.filter(item => item[COL_CITY] === city.nome && city.enabled).reverse()
       console.log(result.length)
       
       if(result.length === 0){
