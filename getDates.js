@@ -2,8 +2,8 @@
 
 async function getDates(){
   const fulldate = new Date();
-  const day = fulldate.getDate();
-  const month = ("0" + (fulldate.getMonth() + 1)).slice(-2);
+  const day = String(fulldate.getDate()).padStart(2,'0')
+  const month = String(fulldate.getMonth() + 1).padStart(2,'0')
   const year = fulldate.getFullYear()
   const archiveDate = `${year}${month}${day}`
   const infoDate = `${day}/${month}/${year}`
